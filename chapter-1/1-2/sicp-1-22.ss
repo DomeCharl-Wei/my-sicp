@@ -43,9 +43,12 @@
   (display " *** ")
   (display elapsed-time))
 
+(define (even? n)
+  (= (remainder n 2) 0))
+
 (define (search-for-primes-iter start end)
   (define (next)
-    (if (= start 2)
+    (if (even? start)
         (+ start 1)
         (+ start 2)))
   (cond ((< start end) (begin
