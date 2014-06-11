@@ -24,3 +24,10 @@
 ;; evaluate to the body of its procedure, the symbol 0 will evaluate to
 ;; its value, and the operand (p) will evaluate to a recursive call to
 ;; itself, which will never stop recursing.
+
+;; If the interpreter uses normal-order evaluation, the (p) operand will
+;; not be evaluated until its value is needed. This is because when using
+;; normal-order evaluation the interpreter will substitute operand expressions
+;; for parameters. Since the conditional statement in the body is structured
+;; such that the second argument never needs to be evaluated, the entire
+;; test procedure will evaluate to 0 under normal-order evaluation.
