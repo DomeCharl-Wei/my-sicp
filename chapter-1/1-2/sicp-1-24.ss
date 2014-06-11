@@ -16,6 +16,8 @@
          (remainder (* base (expmod base (- exp 1) m))
                     m))))
 
+(define (square x) (* x x))
+
 (define (even? n)
   (= (remainder n 2) 0))
 
