@@ -39,8 +39,14 @@
 
 
 ;; compare the elpased time between expmod and expmod-new
-(begin
-  (display "function (expmod 2 10 10) ")
-  (calculate-elapsed-time expmod 2 10 10)
-  (display "function (expmod-new 2 10 10) ")
-  (calculate-elapsed-time expmod-new 2 10 10))
+(for ([i '(1009 1013 1019 10007 10009 10037 100003 100019 100043 1000003 1000033 1000037)])
+  (let ((random-number (random i)))
+    (printf "function (expmod ~a ~a ~a) " random-number i i)
+    (calculate-elapsed-time expmod random-number i i)
+    (printf "function (expmod-new ~a ~a ~a) " random-number i i)
+    (calculate-elapsed-time expmod-new random-number i i)))
+
+;; As we can see, method expmod and expmod-new take same steps to calculate.
+;; `expmod' applies square or multiply to the remainder, while `expmod-new'
+;; does not. As a result, `expmod' takes less seconds than `expmod-new' when
+;; calculates the large arguments.
