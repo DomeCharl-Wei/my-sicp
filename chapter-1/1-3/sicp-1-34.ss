@@ -26,5 +26,9 @@
 ;; => context...:
 ;; => /usr/share/racket/collects/racket/private/misc.rkt:87:7
 
+;; The substitution of (f f) is
+;;    (f f)
+;; => (f 2)
+;; => (2 2).
 ;; The procedure f expected a procedure which has an argument. And the
 ;; argument must be a integer not procedure.
