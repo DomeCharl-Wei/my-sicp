@@ -11,32 +11,55 @@
 ;; and the fixed-point procedure of section 1.3.3 in terms of iterative-imporve.
 
 ;; iterative improve
-(define (iterative-improve good-enough improve)
-  (lambda (x)
-    (define (try guess)
-      (let ((next ((improve x) guess)))
-        (if (good-enough guess next)
-            guess
-            (try next))))
-    (try 1.0)))
+(define (iterative-improve good-enough? improve)
+  (define (try guess)
+    (let ((next (improve guess)))
+      (if (good-enough? guess next)
+          guess
+          (try next))))
+  (lambda (x) (try x)))
 
 ;; rewrite sqrt procedure
 (define (sqrt x)
-  (define (good-enough? x y)
-    (< (abs (- x y)) 0.000001))
-  (define (abs x)
-    (if (< x 0)
-        (- 0 x)
-        x))
+  (define (close-enough? a b)
+    (< (abs (- a b)) 0.000001))
+  (define (improve a)
+    ((average-damp (lambda (y) (/ x y))) a))
 
-  ((iterative-improve good-enough? average-damp) x))
+  ((iterative-improve close-enough? improve) 1.0))
 
-
-(define (average-damp x)
-  (lambda (y) (average y (/ x y))))
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
 
 (define (average x y)
   (/ (+ x y) 2.0))
 
+(define (abs x)
+  (if (< x 0)
+      (- 0 x)
+      x))
 
-;; fixed-point
+;; fixed-point original version
+(define (fixed-point f first-guess)
+  (define tolerance 0.00000001)
+  (define (close-enough? x y)
+    (< (abs (- x y)) tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+          guess
+          (try next))))
+
+  (try first-guess))
+
+
+;; fixed-point with iterative-improve
+(define (fixed-point-iter f first-guess)
+  (define (close-enough? x y)
+    (< (abs (- x y)) 0.00000001))
+  ((iterative-improve close-enough? f) first-guess))
+
+;; sqrt with fixed-point-iter
+(define (sqrt-iter x)
+  (fixed-point-iter (average-damp (lambda (y) (/ x y)))
+                    1.0))
