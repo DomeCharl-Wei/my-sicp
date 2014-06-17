@@ -4,8 +4,11 @@
 ;; (define (make-interval a b) (cons a b))
 ;; Define selectors upper-bound and lower-bound to complete the implementataion
 
+(define (make-interval a b)
+  (cons a b))
+
 (define (upper-bound x)
-  (car x))
+  (cdr x))
 
 (define (lower-bound x)
-  (cdr x))
+  (car x))
