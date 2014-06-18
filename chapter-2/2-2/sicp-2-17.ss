@@ -8,4 +8,6 @@
     (if (null? rest)
         cur
         (last-pair-iter (cdr rest) (car rest))))
-  (last-pair-iter (cdr items) (car items)))
+  (if (null? items)
+      null
+      (last-pair-iter (cdr items) (car items))))
