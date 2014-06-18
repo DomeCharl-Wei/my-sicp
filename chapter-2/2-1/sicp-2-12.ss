@@ -2,6 +2,7 @@
 ;; and a percentage tolerance and produces the desired interval. You must also
 ;; define a selector percent that produces the percentage tolerance for a given
 ;; interval. The center selector is the same as the one shown above.
+(load "sicp-2-7.ss")
 
 (define (make-center-percent c p)
   (make-interval (- c (* c p))
