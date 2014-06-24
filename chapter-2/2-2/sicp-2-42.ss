@@ -26,15 +26,19 @@
 ;; returns a sequence of all solutions to the problem of placing n queens
 ;; on an n*n chessboard.
 (define (queens board-size)
-;; returns the sequence of all ways to place queens in the first k columns
-;; of the board.
+  ;; returns the sequence of all ways to place queens in the first k columns
+  ;; of the board.
   (define (queen-cols k)
     (if (= k 0)
         (list empty-board)
+        ;; filter the not safe combinations
         (filter
          (lambda (positions) (safe? k positions))
+         ;; combine current position queen with all kinds of k-1 safe queens
+         ;; permutation
          (flatmap
           (lambda (rest-of-queens)
+            ;; append all positions of current queen to k-1 safe queens
             (map (lambda (new-row)
                    (adjoin-position new-row k rest-of-queens))
                  (enumerate-interval 1 board-size)))
