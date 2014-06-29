@@ -11,6 +11,9 @@
 
 
 ;; testing
+(define (make-seg a b c d)
+  (make-segment (make-vect a b)
+                (make-vect c d)))
 (define wave (segments->painter (list (make-seg 0.4 0 0.5 0.3)
                                       (make-seg 0.6 0.3 0.6 0)
                                       (make-seg 0.8 0 0.6 0.5)
