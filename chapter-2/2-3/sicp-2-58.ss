@@ -60,3 +60,21 @@
 
 (define (=number? var num)
   (and (number? var) (eq? var num)))
+
+
+
+;; b. The problem becomes substantially harder if we allow standard algebraic
+;; notation, such as (x + 3 * (x + y + 2)), which drops unnecessary parenthese
+;; and assumes that multiplication is done before addition. Can you design
+;; appropriate predicates, selectors, constructors for this notation such that
+;; our derivative progrom still works?
+
+(define (augend exp)
+  (if (null? (cdddr exp))
+      (caddr exp)
+      (cddr exp)))
+
+(define (multiplicand exp)
+  (if (null? (cdddr exp))
+      (caddr exp)
+      (cddr exp)))
