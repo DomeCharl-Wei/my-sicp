@@ -27,22 +27,22 @@
   (= (remainder x 2) 0))
 
 ;; Simpson's Rule integration
-(define (simpson-rule-integration f a b n k)
-  (define h (/ (- b a) n))
+(define (simpson-rule-integration f a b n)
+  (define h (/ (- b a) (* 1.0 n)))
+  (define (y k) (f (+ a (* k h))))
   (define (term x)
-    (cond ((or (= k 0) (= k n)) (f x))
-          ((even? k) (* 2 (f x)))
-          (else (* 4 (f x)))))
+    (cond ((or (= k 0) (= k n)) (y x))
+          ((even? k) (* 2 (y x)))
+          (else (* 4 (y x)))))
   (define (next x)
-    (set! k (+ k 1))
-    (+ x h))
+    (+ x 1))
 
-  (* (/ h 3)
-     (sum term a next b)))
+  (* (/ h 3.0)
+     (sum term 0 next n)))
 
 (define (cube x) (* x x x))
 
-(simpson-rule-integration cube 0 1 100 0)
-(simpson-rule-integration cube 0 1 1000 0)
+(simpson-rule-integration cube 0 1 100)
+(simpson-rule-integration cube 0 1 1000)
 (integral cube 0 1 0.01)
 (integral cube 0 1 0.001)
