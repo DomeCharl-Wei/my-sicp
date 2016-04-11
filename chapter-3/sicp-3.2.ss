@@ -1,0 +1,26 @@
+;; implement make-monitored
+
+(define (make-monitored f)
+  (let ((count 0))
+    (define (how-many-calls?)
+      count)
+    (define (reset-count)
+      (set! count 0)
+      count)
+    (define (mf m)
+      (cond ((eq? m 'how-many-calls?) (how-many-calls?))
+            ((eq? m 'reset-count) (reset-count))
+            (else (begin
+                    (set! count (+ count 1))
+                    (f m)))))
+    mf))
+
+(define square (lambda (x) (* x x)))
+(define s (make-monitored square))
+(s 10)
+(s 'how-many-calls?)
+(s 2)
+(s 'how-many-calls?)
+(s 'reset-count)
+(s 10)
+(s 'how-many-calls?)
