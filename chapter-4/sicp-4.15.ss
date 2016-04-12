@@ -1,5 +1,8 @@
 ;; It's a halting problem!
-;; ref: http://www.lel.ed.ac.uk/~gpullum/loopsnoop.html
+;; refers:
+;;  1. http://www.lel.ed.ac.uk/~gpullum/loopsnoop.html
+;;  2. http://blog.csdn.net/pongba/article/details/1336028
+;;  3. http://stackoverflow.com/questions/8394455/how-does-this-proof-that-the-halting-problem-is-undecidable-work
 
 (define (run-forever) (run-forever))
 (define (try p)
