@@ -68,3 +68,36 @@
   (append (list 'let
 		let-vars)
 	  let-body)) 
+
+
+;; community.schemewiki.org上 b的实现
+;;  link: http://community.schemewiki.org/?sicp-ex-4.16
+(define (scan-out-defines body)
+  (define (name-unassigned defines)
+    (map (lambda (x)
+	   (list (definition-variable x) '*unassigned*))
+	 defines))
+  (define (set-values defines)
+    (map (lambda (x)
+	   (list 'set! (definition-variable x) (definition-value x)))
+	 defines))
+  (define (defines->let exprs defines not-defines)
+    (cond ((null? exprs) (if (null? defines)
+			     body
+			     (list (list 'let
+					 (name-unassigned defines)
+					 (make-begin (append (set-values defines)
+							     (reverse not-defines)))))))
+	  ((definition? (car exprs)) (defines->let
+				       (cdr exprs)
+				       (cons (car exprs)
+					     defines)
+				       not-defines))
+	  (else (defines->let
+		  (cdr exprs)
+		  defines
+		  (cons (car exprs)
+			not-defines)))))
+  (defines->let body '() '()))
+
+
