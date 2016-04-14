@@ -39,3 +39,32 @@
 	  (scan (frame-variables frame)
 		(frame-values frame)))))
   (env-loop env))
+
+
+;; b. 请写出一个过程scan-out-defines, 它以一个过程体为参数, 返回一个不包括
+;;    内部定义的等价表达式, 完成上面描述的变换
+
+
+(define (scan-out-defines fn-body)
+  (define let-vars '())
+  (define let-body '())
+  (define (inter-definition-variable exp) (cadr exp))
+  (define (inter-definition-body exp) (caddr exp))
+  (define (internal-definition->let exp)
+    (set! let-vars (append (list (list (inter-definition-variable exp)
+				       '*unassigned*))
+			   let-vars))
+    (set! let-body (append (list (list 'set!
+				       (inter-definition-variable exp)
+				       (inter-definition-body exp)))
+			   let-body)))
+  (define (help exps)
+    (cond ((null? exps) '())
+	  ((eq? (caar exps) 'define) (begin (internal-definition->let (car exps))
+					    (help (cdr exps))))
+	  (else (begin (set! let-body (append (car exps)
+					      let-body))
+		       (help (cdr exps))))))
+  (append (list 'let
+		let-vars)
+	  let-body)) 
