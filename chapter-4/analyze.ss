@@ -1,3 +1,5 @@
+(require 'scheme)
+
 (define (analyze exp)
   (cond ((self-evaluating? exp)
 	 (analyze-self-evaluating exp))
@@ -7,6 +9,7 @@
 	((definition? exp) (analyze-definition exp))
 	((if? exp) (analyze-if exp))
 	((lambda? exp) (analyze-lambda exp))
+	((let? exp) (analyze (let->lambda exp)))  ;; for sicp-4.22
 	((begin? exp) (analyze-sequence (begin-actions exp)))
 	((cond? exp) (analyze (cond->if exp)))
 	((application? exp) (analyze-application exp))
@@ -18,7 +21,7 @@
 
 (define (analyze-quoted exp)
   (let ((qval (text-of-quotation exp)))
-    (lambda (env qval))))
+    (lambda (env) qval)))
 
 (define (analyze-variable exp)
   (lambda (env) (lookup-variable-value exp env)))
