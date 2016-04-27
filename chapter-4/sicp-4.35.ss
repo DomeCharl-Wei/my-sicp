@@ -1,0 +1,10 @@
+(define (require q)
+  (if (not q)
+      (amb)))
+
+(define (an-interger-between low high)
+  (define (return-one integers)
+    (require (not (null? integers)))
+    (amb (car integers)
+	 (return-one (cdr integers))))
+  (return-one (enumerate low high)))
