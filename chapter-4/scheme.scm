@@ -368,7 +368,5 @@
 
 (define the-global-environment (setup-environment))
 
-(provide 'scheme)
-
-;; (driver-loop)
+(driver-loop)
 
